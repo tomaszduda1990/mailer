@@ -1,9 +1,13 @@
 const express = require('express');
+const userRouter = require('./src/router/user');
+const authRouter = require('./src/router/auth');
 
 const app = express();
 
-app.get('/', (req, res) => {
-  res.json({ msg: 'you entered page' });
+app.use('/auth', authRouter);
+app.use('/user', userRouter);
+app.use('/', (req, res) => {
+  res.json('opening page');
 });
 // comment is nice
 const PORT = process.env.PORT || 5000;
