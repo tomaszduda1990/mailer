@@ -1,6 +1,6 @@
-const express = require('express');
-const userRouter = require('./src/router/user');
-const authRouter = require('./src/router/auth');
+import express from 'express';
+import userRouter from './router/user';
+import authRouter from './router/auth';
 
 const app = express();
 

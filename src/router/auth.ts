@@ -1,8 +1,8 @@
-const express = require('express');
-const passport = require('passport');
-const { Strategy: GoogleStrategy } = require('passport-google-oauth20');
+import express from 'express';
+import passport from 'passport';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
-const authRouter = express.Router();
+const authRouter: express.Router = express.Router();
 // get login page
 
 passport.use(new GoogleStrategy());
@@ -21,4 +21,4 @@ authRouter.post('/google', (req, res) => {
   res.send({ msg: 'POST ROUTE' });
 });
 
-module.exports = authRouter;
+export default authRouter;
