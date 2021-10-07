@@ -1,6 +1,5 @@
 import express from 'express';
 import passport from '../services/passport';
-import User from '../models/user';
 const authRouter: express.Router = express.Router();
 
 authRouter.get(
