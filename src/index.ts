@@ -1,7 +1,9 @@
 import express from 'express';
 import userRouter from './router/user';
 import authRouter from './router/auth';
+import connectDB from './services/mongoose';
 
+connectDB();
 const app: express.Application = express();
 
 app.use('/auth', authRouter);
