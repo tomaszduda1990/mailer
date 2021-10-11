@@ -2,8 +2,9 @@ import express from 'express';
 
 const userRouter: express.Router = express.Router();
 
-userRouter.get('/', (req, res) => {
-  res.json({ msg: 'userRoute reached' });
+userRouter.get('/current-user', (req, res) => {
+  const { user } = req;
+  res.json({ user });
 });
 
 export default userRouter;
