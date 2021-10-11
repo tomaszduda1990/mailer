@@ -1,8 +1,32 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { config } from '../config/private';
-import User from '../models/User';
-export default passport.use(
+import UserModel from '../models/User';
+import mongoose from 'mongoose';
+// import { User } from '../models/User';
+declare global {
+  namespace Express {
+    interface User {
+      _id: mongoose.ObjectId;
+    }
+  }
+}
+passport.serializeUser((user, done) => {
+  console.log(user);
+  done(null, user._id.toString());
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await UserModel.findById(id);
+    done(null, user);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+});
+passport.use(
   new GoogleStrategy(
     {
       clientID: config.googlePublicKey,
@@ -11,13 +35,21 @@ export default passport.use(
       passReqToCallback: true,
     },
     async (request, accessToken, refreshToken, profile, done) => {
-      const user = await User.find({ googleId: profile.id });
-      if (user.length === 0) {
-        const newUser = new User({ googleId: profile.id });
-        await newUser.save();
-      } else {
-        console.log(user);
+      try {
+        const user = await UserModel.findOne({ googleId: profile.id });
+        if (!user) {
+          const newUser = new UserModel({ googleId: profile.id });
+          await newUser.save();
+          done(null, newUser);
+        } else {
+          done(null, user);
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          done(error);
+        }
       }
     }
   )
 );
+export default passport;

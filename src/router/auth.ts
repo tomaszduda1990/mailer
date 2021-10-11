@@ -9,6 +9,11 @@ authRouter.get(
   })
 );
 
+authRouter.get('/api/logout', (req, res) => {
+  req.logout();
+  res.json({ message: 'User successfully logged out' });
+});
+
 authRouter.get('/google/callback', passport.authenticate('google'));
 
 export default authRouter;
